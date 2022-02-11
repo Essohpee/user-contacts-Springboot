@@ -13,7 +13,7 @@
 
  <body>
     <div class="container">
-        <form class="row g-3 p-5" th:action="@{/users/{id}}"
+        <form class="row g-3 p-5" th:action="@{/users/{id}(id=${userContact.id})}"
               method="POST" th:object="${userContact}">
             <div class="col-md-3 mb-3">
                 <label for="name">Name : </label>

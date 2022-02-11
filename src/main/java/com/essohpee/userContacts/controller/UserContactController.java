@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -42,7 +43,7 @@ public class UserContactController {
             return "add_user";
         } else {
             userContactService.saveUserContact(userContact);
-            redirect.addFlashAttribute("msgExit", "The UserContact has been added successfully");
+            redirect.addFlashAttribute("msgExit", "User has been added successfully!");
             return "redirect:/users";
         }
     }
@@ -55,13 +56,12 @@ public class UserContactController {
     }
 
     @PostMapping("/users/{id}")
-    public String updateUserContact(@PathVariable Integer id,
-                                    @Validated UserContact userContact,
+    public String updateUserContact(@Validated @PathVariable Integer id,
+                                    @ModelAttribute("userContact") UserContact userContact,
                                     BindingResult bindingResult,
-                                    RedirectAttributes redirect, Model model) {
+                                    RedirectAttributes redirect) {
         UserContact existingUserContact = userContactService.getUserContactById(id);
         if (bindingResult.hasErrors()) {
-            model.addAttribute("userContact", userContact);
             return "edit_user_contact";
         }
         existingUserContact.setId(userContact.getId());
@@ -72,14 +72,14 @@ public class UserContactController {
         existingUserContact.setEmail(userContact.getEmail());
 
         userContactService.updateUserContact(existingUserContact);
-        redirect.addFlashAttribute("msgExit", "The userContact has been successfully updated");
+        redirect.addFlashAttribute("msgExit", "User has been successfully updated!");
         return "redirect:/users";
     }
 
     @GetMapping("/users/delete/{id}")
     public String deleteUserContact(@PathVariable Integer id,RedirectAttributes redirect) {
         userContactService.deleteUserContactById(id);
-        redirect.addFlashAttribute("msgExit", "The UserContact has been successfully deleted");
+        redirect.addFlashAttribute("msgExit", "User has been successfully deleted!");
         return "redirect:/users";
     }
 }
